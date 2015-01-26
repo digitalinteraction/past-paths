@@ -1,49 +1,34 @@
-# CakePHP
+## Past Paths Project
+Past Paths, which involves Newcastle University’s Culture Lab and Microsoft Research, will develop a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
 
-[![Bake Status](https://secure.travis-ci.org/cakephp/cakephp.png?branch=master)](http://travis-ci.org/cakephp/cakephp)
-[![Latest Stable Version](https://poser.pugx.org/cakephp/cakephp/v/stable.svg)](https://packagist.org/packages/cakephp/cakephp)
-[![License](https://poser.pugx.org/cakephp/cakephp/license.svg)](https://packagist.org/packages/cakephp/cakephp)
+It will transform searching online object catalogues into a playful museum experience that connects object records to diverse online content (text, images, multimedia) from across the web and social media. Engaging, content-rich experiences will be developed that place museum objects at their core.
 
-[![CakePHP](http://cakephp.org/img/cake-logo.png)](http://www.cakephp.org)
+The search model for museum collections is traditionally designed for research audiences who know what they are looking for. This project will design for the casual browser and deliver content that provokes unexpected discovery.
 
-CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.
-Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
+Another benefit of this development will be the transformation of a static data collection into a living, evolving digital archive. User-centered systems will be developed to capture audience interaction with collections. The object record will expand to incorporate associated web content that audience search has deemed relevant and engaging. The search engine will refine its understanding of what web content and search results are most likely to encourage a user journey through museum collections.
 
+Past Paths was one of 12 schemes selected for funding through the Digital R&D Fund for the Arts, which supports collaboration between organisations with arts projects, technology providers and researchers. The fund is a The Fund is a three way partnership between Arts Council England, the Arts and Humanities Research Council (AHRC) and innovation charity Nesta.
 
-## Some Handy Links
+## How to install
+You will require:
 
-[CakePHP](http://www.cakephp.org) - The rapid development PHP framework
+#Services
+Neo4J Community Edition
+MongoDb + PHP MongoDB drivers
+Apache
 
-[CookBook](http://book.cakephp.org) - THE CakePHP user documentation; start learning here!
+#Data
+Working collection of artefacts - Available from Culture Grid (http://www.culturegrid.org.uk)
 
-[API](http://api.cakephp.org) - A reference to CakePHP's classes
-
-[Plugins](http://plugins.cakephp.org/) - A repository of extensions to the framework
-
-[The Bakery](http://bakery.cakephp.org) - Tips, tutorials and articles
-
-[Community Center](http://community.cakephp.org) - A source for everything community related
-
-[Training](http://training.cakephp.org) - Join a live session and get skilled with the framework
-
-[CakeFest](http://cakefest.org) - Don't miss our annual CakePHP conference
-
-[Cake Software Foundation](http://cakefoundation.org) - Promoting development related to CakePHP
+#API Keys
+Culture Grid API Key
+Alchemy API - Available from http://www.alchemyapi.com
+Open Calais API - Available from http://www.opencalais.com
 
 
-## Get Support!
+##Importing Data
+You will require xml dumps from Culture Grid, place these within the app/webroot/files/artefact_xml_exports folder.
 
-[#cakephp](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake
+#Images
+The folder structure is as follows: /app/webroot/img/artefacts/(large/medium/small)/lidoRecID
 
-[Google Group](https://groups.google.com/group/cake-php) - Community mailing list and forum
-
-[GitHub Issues](https://github.com/cakephp/cakephp/issues) - Got issues? Please tell us!
-
-[Roadmaps](https://github.com/cakephp/cakephp/wiki#roadmaps) - Want to contribute? Get involved!
-
-
-## Contributing
-
-[CONTRIBUTING.md](CONTRIBUTING.md) - Quick pointers for contributing to the CakePHP project
-
-[CookBook "Contributing" Section (2.x)](http://book.cakephp.org/2.0/en/contributing.html) [(3.0)](http://book.cakephp.org/3.0/en/contributing.html) - Version-specific details about contributing to the project
