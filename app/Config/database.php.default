@@ -63,26 +63,20 @@
  * A key/value array of driver specific connection options.
  */
 class DATABASE_CONFIG {
-
 	public $default = array(
-		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'database_name',
-		'prefix' => '',
-		//'encoding' => 'utf8',
-	);
+        'datasource' => 'Mongodb.MongodbSource',
+        'host' => '127.0.0.1',
+        'database' => 'pastpaths',
+        'port' => 27017,
+        'prefix' => '',
+        'persistent' => 'true',
+    );
 
-	public $test = array(
-		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'test_database_name',
-		'prefix' => '',
-		//'encoding' => 'utf8',
-	);
+    // To make sure all tests are passing create the following entry in app/Config/database.php
+    // public $test = array(
+    //     'datasource' => 'Mongodb.MongodbSource',
+    //     'database' => 'past-paths',
+    //     'host' => '127.0.0.1',
+    //     'port' => 27017,
+    // );
 }
