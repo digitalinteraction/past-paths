@@ -1,0 +1,214 @@
+html,body{ margin:0; padding:0; height:100%; width:100%; background-color: #333; color:white;}
+
+#first-tile{
+	margin-bottom: 50px;
+}
+
+
+#artefact-container {
+	text-align: center;
+	display: block;
+	position: relative;
+	height:100%;
+}
+
+.full-screen{
+  height:100%;
+  width:100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display:inline-block;
+  position: relative;
+  background-size: cover;
+  /*margin-bottom: 200px;*/
+  background-color: #1a1a1a;
+  /*overflow:hidden;  or overflow:auto; if you want scrollbars */
+}
+
+.info{
+	/*display: none;*/
+	text-align: center;
+	height:50px;
+	width: 50px;
+	border-radius: 50px;
+	background-color: #fff;
+	line-height: 45px;
+	font-size: 24pt;
+	font-family: serif;
+	position: absolute;
+	bottom: 80px;
+	left: 50px;
+	color: #333;
+	-webkit-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+	-moz-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+	box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+	/*font-weight: 700;*/
+}
+
+.size-btn {
+	text-align: center;
+	height:50px;
+	width: 50px;
+	border-radius: 50px;
+	background-color: #fff;
+	line-height: 45px !important;
+	font-size: 50pt;
+	font-family: serif;
+	position: absolute;
+	bottom: 80px;
+	right: 50px;
+	color: #333;
+	-webkit-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+	-moz-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+	box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.1);
+}
+
+.size-btn:hover{
+	background-color: #333;
+	color: #fff;
+	cursor: pointer;
+}
+
+.info:hover{
+	/*border: 1px solid #333;*/
+	background-color: #333;
+	color: #fff;
+	cursor: pointer;
+}
+
+.full-screen > .title{
+	text-align: center;
+}
+
+.description-wrapper{
+	/*background-color: #1a1a1a;*/
+	/*margin-bottom: 50px;*/
+	text-align: left;
+	width:75%;
+	max-width: 960px;
+	margin: 0px auto;
+}
+
+.description-wrapper h3{
+	margin: 0px;
+}
+
+.description-wrapper span {
+	padding: 15px;
+}
+
+.description{
+/*	padding: 25px;
+	text-align: center;
+	width: 960px;
+	margin: auto;*/
+}
+
+.artefact-text-title{
+	width:25%;
+	display:inline-block;
+	vertical-align: top;
+	height: 100%;
+	padding: 5px;
+	min-width: 150px;
+	font-weight: bold;
+}
+
+.artefact-text{
+	width:75%;
+	display:inline-block;
+	padding: 5px;
+	vertical-align: top;
+}
+
+.artefact-text li{
+	text-transform: capitalize;
+}
+
+.artefact-text > .subtitle {
+	display: inline-block;
+	width: 10%;
+	min-width: 80px;
+	padding: 5px;
+	height: 100%;
+	vertical-align: top;
+	font-weight: bold;
+}
+
+.artefact-text > .text {
+	display: inline-block;
+	width: 90%;
+	padding: 5px;	
+}
+
+.artefact-tile > .info{
+	display: none;
+}
+
+.artefact-tile > .size-btn{
+	display: none;
+}
+
+.show-all {
+	background-size: auto 100% !important;
+}
+
+.artefact-tile {
+	/*max-width:192px;
+	max-height:380px;
+	min-width: 192px;
+	min-height: 280px;*/
+	width: 280px;
+	height: 280px;
+	max-width: 280px;
+	max-height: 280px;
+	background-size:cover;
+	background-position: center center;
+	/*border-radius: 3px;*/
+	position: relative;
+	display: inline-block;
+	margin:50px 30px;
+	/*-webkit-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.2);
+	-moz-box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.2);
+	box-shadow: 0px 0px 10px 2px rgba(51,51,51,0.2);*/
+}
+
+.artefact-tile-small{
+	width: 200px;
+	height: 200px;
+	-webkit-transition: width 10s ease-in-out;
+    -moz-transition: width 10s ease-in-out;
+    -o-transition: width 10s ease-in-out;
+    transition: width 10s ease-in-out;
+}
+
+.artefact-tile-large{
+	width: 280px !important;
+	height: 280px !important;
+	-webkit-transition: width 2.5s ease-in-out;
+    -moz-transition: width 2.5s ease-in-out;
+    -o-transition: width 2.5s ease-in-out;
+    transition: width 2.5s ease-in-out;
+}
+
+.title {
+	position: absolute;
+	bottom: 0px;
+	text-align: left;
+	padding: 10px;
+	width: 100%;
+	max-height: 300px;
+	background-color:rgba(38,38,38,0.5);
+	display: none;
+}
+
+.scroll_speed{
+	position: fixed;
+	bottom:20px;
+	right:20px;
+	height:50px;
+	width:50px;
+	border-radius: 25px;
+	background-color: #6c6;
+	z-index: -1;
+}
