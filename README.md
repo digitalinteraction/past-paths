@@ -1,5 +1,5 @@
 #Past Paths Project
-Past Paths, which involves Newcastle University’s Culture Lab and Microsoft Research, will develop a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
+The Past Paths Project is currently developing a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
 
 It will transform searching online object catalogues into a playful museum experience that connects object records to diverse online content (text, images, multimedia) from across the web and social media. Engaging, content-rich experiences will be developed that place museum objects at their core.
 
