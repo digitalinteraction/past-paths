@@ -1,6 +1,8 @@
 #Past Paths Project
 The Past Paths Project is currently developing a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
 
+Explore Tyne & Wear Archives & Museums collection using this codebase here - http://collectionsdivetwmuseums.org.uk 
+
 The search model for museum collections is traditionally designed for research audiences who know what they are looking for. This project is designed for the casual browser and delivers content that provokes unexpected discovery.
 
 Objects are presented based on how you use the site. The more you explore certain artefacts, the more related the content will be. The faster you scroll, the more random the results.
