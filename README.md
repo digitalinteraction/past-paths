@@ -1,11 +1,13 @@
 #Past Paths Project
 The Past Paths Project is currently developing a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
 
-It will transform searching online object catalogues into a playful museum experience that connects object records to diverse online content (text, images, multimedia) from across the web and social media. Engaging, content-rich experiences will be developed that place museum objects at their core.
+The search model for museum collections is traditionally designed for research audiences who know what they are looking for. This project is designed for the casual browser and delivers content that provokes unexpected discovery.
 
-The search model for museum collections is traditionally designed for research audiences who know what they are looking for. This project will design for the casual browser and deliver content that provokes unexpected discovery.
+Objects are presented based on how you use the site. The more you explore certain artefacts, the more related the content will be. The faster you scroll, the more random the results.
 
-Another benefit of this development will be the transformation of a static data collection into a living, evolving digital archive. User-centered systems will be developed to capture audience interaction with collections. The object record will expand to incorporate associated web content that audience search has deemed relevant and engaging. The search engine will refine its understanding of what web content and search results are most likely to encourage a user journey through museum collections.
+The system also provokes audiences to explore across a wide range of collections by exposing the shared metadata that connects objects.
+
+This documentation and codebase is freely available for cultural heritage organisations to use. Commercial reuse and exploitation of this system is prohibited
 
 Past Paths was one of 12 schemes selected for funding through the Digital R&D Fund for the Arts, which supports collaboration between organisations with arts projects, technology providers and researchers. The fund is a The Fund is a three way partnership between Arts Council England, the Arts and Humanities Research Council (AHRC) and innovation charity Nesta.
 
