@@ -34,17 +34,7 @@ class ArtefactsController extends AppController {
 	}
 
 	public function index() {
-		// $random = $this->Artefact->find('all', array(
-		// 								'conditions' => array(
-		// 									'administrativeMetadata' => array(
-		// 										'resourceWrap' => array(
-		// 											'exists' => 'true'
-		// 										)
-		// 									)
-		// 								),
-		// 								'limit' => 10
-		// 						   ));
-
+		
 		$artefacts = $this->Artefact->find('all', array(
 										'fields' => array(
 											'_id',
@@ -60,225 +50,188 @@ class ArtefactsController extends AppController {
 		
 	}
 
-	public function constraints()
-	{
-		$this->Neo4j->create_contraint("Keyword", array('text'));
-		$this->Neo4j->create_contraint("Entity", array('text'));
-		// $this->Neo4j->create_contraint("Artefact", array('text'));
-	}
+	// public function register_session(){
+	// 	$this->layout = 'ajax';
+	// 	$this->autoRender = false;
 
-	public function neo()
-	{
-		ini_set('display_errors',1);
-		ini_set('display_startup_errors',1);
-		ini_set('memory_limit','3000M');
-		ini_set('max_execution_time', -1);
-		error_reporting(-1);
-		$this->layout = 'ajax';
-		$this->autoRender = false;
+	// 	// prevent browser from caching the redirect
+	// 	$this->response->disableCache();
 
+	// 	$browsing_session = array(
+	// 		'start_time' => time(),
+	// 		's_id' => $this->Session->read('Config.userAgent'),
+	// 		'viewed' => array(),
+	// 		'exclude_from_results' => array(),
+	// 		'browser' => $_SERVER['HTTP_USER_AGENT'],
+	// 		'end_time' => null
+	// 	);
 		
-		$artefacts = $this->Artefact->get_all_artefacts();
-		$artefacts = array_reverse($artefacts);
+	// 	$browsing_session = $this->BrowsingSession->insert($browsing_session);
 
-		// $artefacts = $this->Artefact->find('all', array(
-		// 								'fields' => array(
-		// 									'_id',
-		// 									// 'lidoRecID',
-		// 									// 'descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue'
-		// 								),
-		// 								// 'conditions' => array(
-		// 								// 	'administrativeMetadata.resourceWrap.resourceSet.0' => array('$exists' =>  'true'),
-		// 								// 	'lidoRecID' => ('emu.ecatalogue.decorativeart&design.284061')
-		// 								// ),
-		// 								'limit' => 1
-		// 						   ));
-
-
-		// echo '<pre>';
-		// print_r($artefacts);
-		// echo '</pre>';
-
-		// $this->Neo4j->clear_graph();
-
-		$client = new Everyman\Neo4j\Client();
-				
-		$artefact_node_label = $client->makeLabel('Artefact');
-		$keyword_label = $client->makeLabel('Keyword');
-
-		foreach($artefacts as $artefact)
-		{
-			$queryString = "MATCH (n:Artefact {lidoRecID : {lidoRecID}}) RETURN id(n)";
-			$query = new Everyman\Neo4j\Cypher\Query($client, $queryString, array('lidoRecID' => $artefact["lidoRecID"]));
-			$result = $query->getResultSet();
-
-			if($result->count() == 0)
-			{
-				$queryString = "MERGE (n:Artefact {lidoRecID : {lidoRecID}}) RETURN id(n)";
-				$query = new Everyman\Neo4j\Cypher\Query($client, $queryString, array('lidoRecID' => $artefact["lidoRecID"]));
-				$result = $query->getResultSet();
-				
-				$artefact_node = $result->current();
-
-				$ai = new AlchemyAPI(Configure::read('alchemy_api_key'));
-
-				$description = implode('. ', $artefact['descriptions']);
-				$description .= $artefact['title'];
-				$description .= implode('. ', $artefact['terms']);
-
-				$keywords = $ai->keywords('text', $description, null);
-
-				foreach($keywords['keywords'] as $keyword)
-				{
-					$queryString = "MERGE (n:Keyword {keyword : {text}}) RETURN id(n)";
-					$query = new Everyman\Neo4j\Cypher\Query($client, $queryString, array('text' => $keyword["text"]));
-					$result = $query->getResultSet();
-
-					$keyword_node = $result->current();
-					
-					$queryString = "START n=node({node_id}), k=node({keyword_id}) MERGE (n)-[r:HAS {relevance:{relevance}}]->(k) RETURN n,k,r";
-					$query = new Everyman\Neo4j\Cypher\Query($client, $queryString, array('node_id' => $artefact_node['n'], 'keyword_id' => $keyword_node['n'], 'relevance' => floatval($keyword['relevance'])));
-					$result = $query->getResultSet();
-				}
-			}
-
-			// $data = array(
-			// 	'key' => 'lidoRecID',
-			// 	'value' => $artefact['lidoRecID'],
-			// 	'properties' => array(
-			// 		'lidoRecID' => $artefact['lidoRecID']
-			// 	)
-			// );
-
-			// // $node = $this->Neo4j->create_unique_node($data, 'Artefact');
-
-			// $data = array(
-			// 	"lidoRecID" => $artefact['lidoRecID'],
-			// 	"Boop" => 'KAPOW'
-			// );
-
-			// $node = $this->Neo4j->create_unique_node_cypher($data, 'Artefact');
-
-			// echo '<pre>';
-			// print_r($node);
-			// echo '</pre>';
-
-			// $ai = new AlchemyAPI(Configure::read('alchemy_api_key'));
-
-			// $description = implode('. ', $artefact['descriptions']);
-			// $description .= $artefact['title'];
-			// $description .= implode('. ', $artefact['terms']);
-
-			// echo '<pre>';
-			// print_r($description);
-			// echo '</pre>';
-
-			// // 	// $entities = $ai->entities('text', $description, null);
-			// $key_words = $ai->keywords('text', $description, null);
-
-			// foreach($key_words['keywords'] as $key_word)
-			// {
-			// 	$data = array(
-			// 		'key' => 'text',
-			// 		'value' => $key_word['text'],
-			// 		'properties' => array(
-			// 			'text' => $key_word['text']
-			// 		)
-			// 	);
-
-			// 	$key_word_node = $this->Neo4j->create_unique_node($data, 'Keyword');
-
-			// 	echo '<pre>';
-			// 	print_r($key_word_node);
-			// 	echo '</pre>';
-			// }
-		}
-
-
-		// $this->Neo4j->create_contraint("Artefact", array('lidoRecID'));
-		// echo '<pre>';
-		// print_r($this->Neo4j->get_node_by_artefact_id(25));
-		// echo '</pre>';
-
-	}
-
-	public function scroll(){
-		// $artefact = $this->Artefact->get_random_artefact();
-		$artefact = $this->Artefact->get_artefact();
-
-		// echo '<pre>';
-		// print_r($artefact);
-		// echo '</pre>';
-
-		$this->set('artefact', $artefact);
-		// $this->Artefact->convert_record_descriptions();
-	}
+	// 	$this->redirect(array(
+	// 	    'controller' => 'artefacts', 'action' => 'scroll2', '_id' => $browsing_session['_id']
+	// 	));
+	// }
 
 	public function scroll2(){
-		// start session variable
-		session_start();
-		session_destroy();
 
-		session_start();
+		$browsing_session = array(
+			'start_time' => time(),
+			's_id' => $this->Session->read('Config.userAgent'),
+			'u_id' => null, 
+			'viewed' => array(),
+			'exclude_from_results' => array(),
+			'browser' => $_SERVER['HTTP_USER_AGENT'],
+			'end_time' => null,
+			'actions' => array()
+		);
 		
+		$browsing_session = $this->BrowsingSession->insert($browsing_session);
 
-		$_SESSION['browsing_session'] = array(
-				'start_time' => time(),
-				's_id' => session_id(),
-				'viewed' => array(),
-				'exclude_from_results' => array(),
-				'browser' => $_SERVER['HTTP_USER_AGENT']
-			);
+		$browsing_session = $this->BrowsingSession->get($browsing_session['_id']);
 
-		$artefact = $this->Artefact->get_random_artefact();
-		$this->set('artefact', $artefact);
+		$result = $this->Artefact->get_random_artefact();
+
+		$click_event['lidoRecID'] = $result["artefact"]['lidoRecID'];
+		$click_event['removed'] = false;
+		$click_event['created'] = date("Y-m-d H:i:s");
+
+		$browsing_session['viewed'][] = $click_event;
+
+		$this->BrowsingSession->update_viewed($browsing_session['_id'], $browsing_session['viewed']);
+
+		$this->set('artefact', $result["artefact"]);
+		$this->set('offset', $result["offset"]);
+		$this->set('_id', $browsing_session['_id']);
 	}
 
-	public function get2(){
+	public function kapow() {
+		$this->layout = 'ajax';
+		$this->autoRender = false;
+		echo '<pre>';
+		print_r(json_encode($this->BrowsingSession->get($_GET['_id'])));
+		echo '</pre>';
+	}
+
+
+	public function fetch_more(){
 		$this->layout = 'ajax';
 		$this->autoRender = false;
 
-		session_start();	
-
 		$randomness = $_GET['randomness_level'];
 		$offset = $_GET['offset'];
-		return json_encode($this->Artefact->get_artefacts(10, $offset, $randomness));
-		// return json_encode($this->Artefact->recommend_artefacts());
+
+		// $this->Session->check('browsing_session');
+		// $browsing_session = $this->Session->read('browsing_session');
+
+		$browsing_session = $this->BrowsingSession->get($_GET['_id']);
+
+		if($browsing_session)
+		{
+			$limit = 50;
+
+			switch ($randomness) {
+				case 0:
+					$limit = 48;
+					break;
+				case 1:
+					$limit = 24;
+					break;
+				case 2:
+					$limit = 16;
+					break;
+				default:
+					$limit = 48;
+					break;
+			}
+
+			$results = $this->Artefact->get_artefacts($limit, $offset, $randomness, $browsing_session['exclude_from_results']);
+			
+			if(is_array($browsing_session['exclude_from_results']) && is_array($results['exclude_from_results']))
+			{
+				$browsing_session['exclude_from_results'] = array_merge($results['exclude_from_results'], $browsing_session['exclude_from_results']);
+				// update_session		
+			}
+
+			$this->BrowsingSession->update_exclude_from_results($browsing_session['_id'], $browsing_session['exclude_from_results']);
+
+			$results['randomness'] = $randomness;
+
+			unset($results['exclude_from_results']);
+			return json_encode($results);
+		}
+		else
+		{
+			$this->redirect(array(
+			    'controller' => 'artefacts', 'action' => 'scroll2'
+			));
+		}
 	}
 
-	public function get(){
+	public function remove_artefact_from_session() {
 		$this->layout = 'ajax';
 		$this->autoRender = false;
 
-		$offset = $_GET['offset'];
-		$randomness = $_GET['randomness_level'];
+		$this->Session->check('browsing_session');
+		$artefact_clicked = $_GET['lidoRecID'];
+		$_id = $_GET['_id'];
 
-		return json_encode($this->Artefact->get_artefacts(10, $offset, $randomness));
+		$browsing_session = $this->BrowsingSession->get($_GET['_id']);
+
+		// loop through the browsed items and find the one we want to update
+		for($i = 0; $i < count($browsing_session['viewed']); $i++)
+		{
+			if($browsing_session['viewed'][$i]['lidoRecID'] == $artefact_clicked)
+			{
+				$browsing_session['viewed'][$i]['removed'] = true;
+			}
+		}
+
+		$this->BrowsingSession->update_viewed($browsing_session['_id'], $browsing_session['viewed']);
+
+		// remove from neo
+
 	}
 
 	public function record_click(){
 		$this->layout = 'ajax';
 		$this->autoRender = false;
-		session_start();
-		$_SESSION['browsing_session']['viewed'][] = array('lidoRecID' => $_GET['lidoRecID'], 'created' => time());
+
+		$this->Session->check('browsing_session');
+		$artefact_clicked = $_GET['lidoRecID'];
+		$_id = $_GET['_id'];
+
+		$browsing_session = $this->BrowsingSession->get($_GET['_id']);
+
+		$click_event['lidoRecID'] = $artefact_clicked;
+		$click_event['removed'] = false;
+		$click_event['created'] = date("Y-m-d H:i:s");
+
+		$browsing_session['viewed'][] = $click_event;
+		
+		$this->BrowsingSession->update_viewed($browsing_session['_id'], $browsing_session['viewed']);
+
+		if($browsing_session['viewed'] > 1){
+			// update neo with click reference
+			$from = $browsing_session['viewed'][ (count($browsing_session['viewed'] ) - 1) ]['lidoRecID'];
+			$to = $browsing_session['viewed'][ (count($browsing_session['viewed'] ) - 2) ]['lidoRecID'];
+
+			$this->Artefact->record_click($from, $to, (string) $browsing_session['_id']);
+		}
+
 	}
 
-	public function finish_session(){
+	public function keep_alive() {
 		$this->layout = 'ajax';
 		$this->autoRender = false;
-
-		session_start();
-
-		$_SESSION['browsing_session']['end_time'] = time();
-
-		$this->BrowsingSession->insert($_SESSION['browsing_session']);
-
-		session_destroy(session_id());
+		
+		$browsing_session = $this->BrowsingSession->get($_GET['_id']);
+		$this->BrowsingSession->update_end_time($browsing_session['_id']);
+	
 	}
 
 	public function view($id)
 	{
-
 		$artefact = $this->Artefact->find('first', array(
 										'conditions' => array(
 											// 'administrativeMetadata.resourceWrap.resourceSet.0' => array('$exists' =>  'true'),
@@ -288,274 +241,11 @@ class ArtefactsController extends AppController {
 		$this->set('artefact', $artefact);
 	}
 
-	public function random()
-	{
-		session_start();
-		
-		// session_destroy();
-		// $this->Neo4j->clear_graph();
-
-		$seed = rand(0, 32592);
-		// $seed = 1;
-		$artefact = $this->Artefact->find('first', array(
-										'limit' => 1,
-										'offset' => $seed
-								   ));
-		
-		$this->set('artefact', $artefact);
-
-		$data = array(
-				'key' => 'lidoRecID',
-				'value' => $artefact['Artefact']['lidoRecID'],
-				'properties' => array(
-					'lidoRecID' => $artefact['Artefact']['lidoRecID']
-				)
-			);
-
-		// $node = $this->Neo4j->create_unique_node($data, 'Artefact');
-
-		// $queryString = "MATCH (n) RETURN n LIMIT 2";
-		// $query = new Everyman\Neo4j\Cypher\Query($this->client, $queryString);
-		// $result = $query->getResultSet();
-		
-		// foreach($result as $row)
-		// {
-		// 	echo '<pre>';
-		// 	print_r($row['n']->getProperty('lidoRecID'));
-		// 	echo '</pre>';
-		// }
-
-		// $_SESSION['artefacts'][] = $artefact['Artefact']['lidoRecID'];
-
-		// echo '<pre>';
-		// print_r($_SESSION);
-		// echo '</pre>';
-
-
-		// echo '<pre>';
-		// print_r($this->client->getServerInfo());
-		// echo '</pre>';
-
-		$this->add_relationship($_SESSION['artefacts']);
-
-		// $term = 'jug';
-		// $results = $this->Artefact->find('all', array(
-		// 					'fields' => array(
-		// 						'_id',
-		// 						'descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term',
-		// 						'administrativeMetadata.resourceWrap.resourceSet.resourceRepresentation.linkResource'
-		// 					),
-		// 					'conditions' => array(
-		// 						'descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term' => $term,
-		// 						'administrativeMetadata.resourceWrap.resourceSet.1' => array('$exists' =>  'false')
-		// 					),
-		// 					// 'conditions' => array(
-								
-		// 					// ),
-		// 					'limit' => 5
-		// 				));
-
-		// echo '<pre>';
-		// print_r($results);
-		// echo '</pre>';
-		// $db = $this->Artefact->getDataSource();
-
-		// echo '<pre>';
-		// print_r(get_class_methods($db));
-		// echo '</pre>';
-		// $db->rawQuery(
-		// 	'db.artefacts.find( {"descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term":"jug","administrativeMetadata.resourceWrap.resourceSet.1":{"$exists":"false"}})'
-		// );
-	}
-
-	private function add_relationship($artefacts = array())
-	{
-		if(count($artefacts) > 1)
-		{
-			$queryString = "MATCH (n:Artefact) RETURN n LIMIT 2";
-			$query = new Everyman\Neo4j\Cypher\Query($this->client, $queryString);
-			$result = $query->getResultSet();
-
-			// create relationship
-			$from_node = $this->Neo4j->get_node_by_artefact_id($artefacts[(count($artefacts) - 2)]);
-
-			echo '<pre>';
-			print_r($from_node);
-			echo '</pre>';
-
-			$to_node = $this->Neo4j->get_node_by_artefact_id($artefacts[(count($artefacts) - 1)]);
-
-			echo '<pre>';
-			print_r($to_node);
-			echo '</pre>';
-
-
-			echo '<pre>';
-			print_r($this->Neo4j->get_relationship_between_nodes($from_node->id, $to_node->id, "LEAD_TO"));
-			echo '</pre>';
-			// echo '<pre>';
-			// print_r($this->Neo4j->create_relationship($from_node->data[0]->graph->nodes[0]->id, $to_node->data[0]->graph->nodes[0]->id, "LEAD_TO", array('count' => 1)));
-			// echo '</pre>';
-
-		}
-	}
-
-	public function get_artefacts($term)
-	{
-		$this->layout = 'ajax';
-		$this->autoRender = false;
-
-		$m = new MongoClient();
-		// $results = $m->pastpaths->artefacts->find()->fields('')->limit(1);
-
-		// $query = array('$project' => array('img' => ''))
-		// echo '<pre>';
-		// $results = $m->pastpaths->artefacts->find()->limit(1);
-		// foreach($results as $document) {  
-		// 	echo '<pre>';
-		// 	print_r($document);
-		// 	echo '</pre>';
-		// } 
-
-		// echo '</pre>';
-		$db = $m->selectDB("pastpaths");
-
-		$results = $m->pastpaths->artefacts->aggregate(
-			array(
-				'$match' => array(
-					'descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term' => $term
-				)
-			),
-			array(
-				'$project' => array(
-					'description' => '$descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue',
-					'image' => '$administrativeMetadata.resourceWrap.resourceSet.resourceRepresentation.linkResource',
-					'lidoRecID' => '$lidoRecID'
-				)
-			),
-			array(
-				'$limit' => 35
-			)
-		);
-
-		$ai = new AlchemyAPI(Configure::read('alchemy_api_key'));
-
-		
-		$oc = new OpenCalais(Configure::read('open_calais_api_key'));
-
-
-		// foreach($results['result'] as $key => $record)
-		// {
-		// 	if(is_array($results['result'][$key]['description']))
-		// 	{
-		// 		$description = implode($results['result'][$key]['description']);
-		// 	}
-		// 	else
-		// 	{
-		// 		$description = $results['result'][$key]['description'];
-		// 	}
-			
-		// 	// $entities = $oc->getEntities((is_array($results['result'][$key]['description']) ? implode($results['result'][$key]['description']) : $results['result'][$key]['description']));
-		// 	$entities = $ai->entities('text', $description, null);
-		// 	$key_words = $ai->keywords('text', $description, null);
-
-		// 	$results['result'][$key]['entities'] = $entities['entities'];
-		// 	$results['result'][$key]['key_words'] = $key_words['keywords'];
-		// }
-
-		echo json_encode($results['result']);
-
-		// $results = $this->Artefact->find('all', array(
-		// 					'fields' => array(
-		// 						'_id',
-		// 						'descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue',
-		// 						'descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term',
-		// 						'administrativeMetadata.resourceWrap.resourceSet' => array('$slice' => 1)
-
-		// 					),
-		// 					'conditions' => array(
-		// 						// 'descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term' => $term,
-		// 						'administrativeMetadata.resourceWrap.resourceSet.0' => array('$exists' =>  'true')
-		// 					),
-		// 					'limit' => 2
-		// 				));
-
-		// echo '<pre>';
-		// print_r($results);
-		// echo '</pre>';
-		// echo json_encode($results);
-	}
-
-	public function test() 
-	{
-	}
-
-	public function import_images()
-	{
-		$this->layout = 'ajax';
-		$this->autoRender = false;
-		ini_set('max_execution_time', 0);
-		ini_set('memory_limit', '-1');
-
-		$m = new MongoClient();
-		$db = $m->selectDB("pastpaths");
-
-		$results = $m->pastpaths->artefacts->aggregate(
-			array(
-				'$project' => array(
-					'image' => '$administrativeMetadata.resourceWrap.resourceSet.resourceRepresentation.linkResource',
-					'lidoRecID' => '$lidoRecID'
-				)
-			)
-			// array(
-			// 	'$limit' => 5
-			// )
-		);
-
-		foreach($results['result'] as $artefact)
-		{
-			$dir = new Folder('../webroot/img/artefacts/' . $artefact['lidoRecID'], true, 0755);
-
-			$img_counter = 0;
-			
-			if(array_key_exists('image', $artefact))
-			{
-				if(is_array($artefact['image']))
-				{
-					foreach($artefact['image'] as $img)
-					{
-						if(!file_exists('../webroot/img/artefacts/' . $artefact['lidoRecID'] . '/' . $img_counter . '.jpeg'))
-						{
-							copy($img, '../webroot/img/artefacts/' . $artefact['lidoRecID'] . '/' . $img_counter . '.jpeg');
-							$img_counter++;
-						}
-					}
-				}
-				else
-				{
-					if(!file_exists('../webroot/img/artefacts/' . $artefact['lidoRecID'] . '/' . $img_counter . '.jpeg')){
-						copy($artefact['image'], '../webroot/img/artefacts/' . $artefact['lidoRecID'] . '/0.jpeg');
-					}
-				}
-			}
-		}
-		
-
-		// echo '<pre>';
-		// print_r(count($results['result']));
-		// echo '</pre>';
-	}
-
-	public function bubble()
-	{
-
-	}
-
 	public function map_data(){
 		$this->layout = 'ajax';
 		$this->autoRender = false;
 
-		echo json_encode($this->Artefact->get_map_artefacts(100));
+		echo json_encode($this->Artefact->get_map_artefacts(10));
 	}
 
 	public function map_node_artefacts($node_id, $limit){
@@ -565,108 +255,53 @@ class ArtefactsController extends AppController {
 		echo json_encode($this->Artefact->get_map_node_artefacts($node_id, $limit));	
 	}
 
-	public function import()
-	{
-		ini_set('max_execution_time', 1000);
-		ini_set('memory_limit', '-1');
-
-		$dir = new Folder('../webroot/files/artefact_xml_exports');
-		$files = $dir->find('.*\.xml');
-
-		// echo '<pre>';
-		// print_r($files);
-		// echo '</pre>';
-
-		foreach($files as $file)
-		{
-			$file = new File($dir->pwd() . DS . $file);
-
-			try
-			{
-				$xml = simplexml_load_file($file->path);	
-
-				$namespaces = $xml->getNamespaces();
-				$results = $xml->xpath('//lido:lido');
-
-				$artefacts = array();
-
-				foreach($results as $result)
-				{
-
-
-					echo '<pre>';
-					print_r(json_decode(json_encode($result->children($namespaces['lido'])), true));
-					echo '</pre>';
-
-					break;
-					// $record = $this->SimpleXML2ArrayWithCDATASupport($result->children($namespaces['lido']));
-					// echo '<pre>';
-					// print_r($record);
-					// echo '</pre>';
-
-
-					// $check = $this->Artefact->find('first', array(
-					// 								'conditions' => array(
-					// 									'lidoRecID' => 123
-					// 								),
-					// 								'limit' => 1
-					// 							));
-
-					// if(!$check)
-					// {
-						// $this->Artefact->create();
-						// $this->Artefact->save($record);
-					// }
-
-					// $terms = (array)$result->children($namespaces['lido'])->descriptiveMetadata->objectClassificationWrap->objectWorkTypeWrap->objectWorkType->term;
-					
-					// $this->break_terms($terms);
-					
-
-					// $counter++;
-				}
-			}
-			catch(Exception $e)
-			{
-				echo '<pre>';
-				print_r($e);
-				echo '</pre>';
-			}
-
-			$file->close();
-		}
+	public function more_map_data(){
+		$this->layout = 'ajax';
+		$this->autoRender = false;
 	}
 
-	function break_terms($terms)
-	{
-		foreach($terms as $term)
-		{
-			$term = trim($term);
+	public function explore_keyword(){
+		$this->layout = 'ajax';
+		$this->autoRender = false;	
 
-			// check for ands
-			if(substr_count($term, '&') > 1)
-			{
-				$this->break_terms(explode("&", $term));
-			}
-			else
-			{
-				// check for multiple commas
-				if(substr_count($term, ','))
-				{
-					$this->break_terms(explode(",", $term));
-				}
-				else
-				{	
-					if(array_key_exists($term, $this->all_terms))
-					{
-						$this->all_terms[$term]++;
-					}
-					else
-					{
-						$this->all_terms[$term] = 1;
-					}
-				}
-			}
-		}	
+		$response = array();
+
+		$keyword = $_GET['keyword'];
+
+		$response = $this->Artefact->get_artefacts_by_keyword($keyword);
+
+		echo json_encode($response);
+	}
+
+	public function explore_artefact(){
+		$this->layout = 'ajax';
+		$this->autoRender = false;	
+
+		$response = array();
+
+		$lidoRecId = $_GET['lidoRecId'];
+
+		$response = $this->Artefact->get_keywords_by_artefact_lido_id($lidoRecId);
+
+		echo json_encode($response);
+	}
+
+	public function session_data_map(){
+		$this->layout = 'ajax';
+		$this->autoRender = false;
+
+		$_id = $_GET['s_id'];
+
+		echo json_encode($this->Artefact->get_session_data_map($_id));
+	}
+
+	public function fetch_more_from_lido_rec_id(){
+		$this->layout = 'ajax';
+		$this->autoRender = false;
+
+
+		$lidoRecID = $_GET['lidoRecID'];
+		
+		echo json_encode($this->Artefact->launch_from_lido_rec_id($lidoRecID));
 	}
 }

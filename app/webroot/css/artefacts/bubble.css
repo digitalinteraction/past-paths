@@ -1,0 +1,74 @@
+text {
+  font: 10px sans-serif;
+}
+
+#clipCircle{
+  stroke: #FFF;
+}
+
+.artefact-node-img{
+  /*border:10px solid #fff;*/
+}
+
+.artefact_tooltip{
+  position: absolute;
+  z-index: 100;
+  visibility: hidden;
+  font-size: 50pt;
+}
+
+.node-keyword{
+    z-index: 20;
+    /*fill  : rgb(86, 179, 158);*/
+    fill:#ffffff;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.node-keyword circle{
+	opacity: 1;
+}
+
+.node-artefact{
+    z-index: 20;
+    fill:#333; 
+    opacity: 1;
+    cursor: pointer;
+}
+
+.node-artefact circle{
+  opacity: 1;
+
+}
+
+.highlighted {
+  fill: red;
+}
+
+.node-label{
+  font-size: 10pt;
+  /*stroke:white;*/
+  fill:white;
+  z-index: 21;
+}
+
+.link {
+  stroke: #fff;
+  stroke-opacity: .6;
+  z-index: 1;
+}
+
+.link-highlighted{
+  stroke:#8B0044;
+  stroke-width:5;
+}
+
+.bubble {
+   cursor:move;
+}
+
+.loading-circle {
+    fill: none;
+    /*stroke: #398FBD;*/
+    stroke: #FFF;
+}

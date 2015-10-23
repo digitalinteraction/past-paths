@@ -69,9 +69,12 @@ class PagesController extends AppController {
 
 		if($page == 'home')
 		{
-			$artefact = $this->Artefact->get_random_artefact();
+			$artefacts[] = $this->Artefact->get_random_artefact();
+			$artefacts[] = $this->Artefact->get_random_artefact();
+			$artefacts[] = $this->Artefact->get_random_artefact();
+			$artefacts[] = $this->Artefact->get_random_artefact();
 
-			$this->set('artefact', $artefact);
+			$this->set('artefacts', $artefacts);
 		}
 
 		try {

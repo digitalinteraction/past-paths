@@ -72,8 +72,8 @@ CakePlugin::load('Mongodb');
  *
  */
 
-Configure::write('open_calais_api_key', 'ENTER YOUR API KEY');
-Configure::write('alchemy_api_key', 'ENTER YOUR API KEY');
+Configure::write('open_calais_api_key', 'ENTER_OPEN_CALAIS_API_KEY');
+Configure::write('alchemy_api_key', 'ENTER_ALCHEMY_API_KEY');
 
 Configure::write('db_name', 'pastpaths');
 

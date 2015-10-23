@@ -1,0 +1,15 @@
+body {
+	background-color: #c1c1c1;
+}
+
+.modal-title{
+	color: #333;
+}
+
+.modal-body {
+	color: #333;
+}
+
+.modal-backdrop {
+	z-index: 0 !important;
+}

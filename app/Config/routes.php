@@ -24,12 +24,31 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
-	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/share/:_sid', array('controller' => 'histories', 'action' => 'view'), array('pass' => array('_sid')));
+	Router::connect('/share/a/:lidoRecID', array('controller' => 'histories', 'action' => 'view_item'), array('pass' => array('lidoRecID')));
+	Router::connect('/artefacts/fetch_more', array('controller' => 'artefacts', 'action' => 'fetch_more'));
 
+	Router::connect('/export', array('controller' => 'exports', 'action' => 'export_data'));
+
+	// tracking
+	Router::connect('/t/visit', array('controller' => 'trackers', 'action' => 'record_visit'));
+	Router::connect('/t/action', array('controller' => 'trackers', 'action' => 'record_action'));
+
+	Router::connect('/map/get_artefacts_by_keyword', array('controller' => 'artefacts', 'action' => 'explore_keyword'));
+	Router::connect('/map/get_keywords_by_lido_id', array('controller' => 'artefacts', 'action' => 'explore_artefact'));
+
+	Router::connect('/session/keep_alive', array('controller' => 'artefacts', 'action' => 'keep_alive'));
+	Router::connect('/session/session_data_map', array('controller' => 'artefacts', 'action' => 'session_data_map'));
+	Router::connect('/session/record_click', array('controller' => 'artefacts', 'action' => 'record_click'));
+	Router::connect('/session/remove_artefact_from_session', array('controller' => 'artefacts', 'action' => 'remove_artefact_from_session'));
+
+  Router::connect('/import', array('controller' => 'imports', 'action' => 'import'));
+  Router::connect('/import_images', array('controller' => 'imports', 'action' => 'import_images'));
+	// Router::connect('/:_sid', array('controller' => 'histories', 'action' => 'view'), array('pass' => array('_sid')));
+	Router::connect('/', array('controller' => 'artefacts', 'action' => 'scroll2'));
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
