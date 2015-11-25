@@ -1,13 +1,21 @@
 #Past Paths Project
-The Past Paths Project is currently developing a web platform and novel search engine encouraging people to search and discover museum objects. It will creatively connect objects to rich web content and inspire new public explorations of online collections.
-
-It will transform searching online object catalogues into a playful museum experience that connects object records to diverse online content (text, images, multimedia) from across the web and social media. Engaging, content-rich experiences will be developed that place museum objects at their core.
-
-The search model for museum collections is traditionally designed for research audiences who know what they are looking for. This project will design for the casual browser and deliver content that provokes unexpected discovery.
-
-Another benefit of this development will be the transformation of a static data collection into a living, evolving digital archive. User-centered systems will be developed to capture audience interaction with collections. The object record will expand to incorporate associated web content that audience search has deemed relevant and engaging. The search engine will refine its understanding of what web content and search results are most likely to encourage a user journey through museum collections.
-
-Past Paths was one of 12 schemes selected for funding through the Digital R&D Fund for the Arts, which supports collaboration between organisations with arts projects, technology providers and researchers. The fund is a The Fund is a three way partnership between Arts Council England, the Arts and Humanities Research Council (AHRC) and innovation charity Nesta.
+The Past Paths project has developed a web platform and novel search engine encouraging people to search and discover museum objects. It has been produced by Tyne & Wear Archives & Museums, Newcastle University and Microsoft Research.
+ 
+The search model for museum collections is often designed to support audiences who know broadly what they are looking for and how to look for it. This project is designed for the casual browser and delivers content that provokes unexpected discovery.
+ 
+Explore Tyne & Wear Archives & Museums collection using this codebase here -http://collectionsdivetwmuseums.org.uk
+ 
+Objects are presented based on how you use the site. The more you explore certain artefacts, the more related the content will be. The faster you scroll, the more random the results.
+ 
+The system also provokes audiences to explore across a wide range of collections by exposing the shared metadata that connects objects.
+ 
+This documentation and codebase is freely available for cultural heritage organisations to use. Commercial reuse and exploitation of this system is prohibited.
+ 
+Any reuse of this codebase should credit and hyperlink ‘Powered by Past Paths discovery engine’.
+ 
+Please contact john.coburn@twmuseums.org.uk with any questions about reuse.
+ 
+This project is supported by the Digital R&D Fund for the Arts: Nesta, Arts and Humanities Research Council and public funding by the National Lottery through Arts Council England.
 
 ## How to install
 You will require:
