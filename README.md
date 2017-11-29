@@ -1,4 +1,4 @@
-#Past Paths Project
+# Past Paths Project
 The Past Paths project has developed a web platform and novel search engine encouraging people to search and discover museum objects. It has been produced by Tyne & Wear Archives & Museums, Newcastle University and Microsoft Research.
  
 The search model for museum collections is often designed to support audiences who know broadly what they are looking for and how to look for it. This project is designed for the casual browser and delivers content that provokes unexpected discovery.
@@ -20,19 +20,19 @@ This project is supported by the Digital R&D Fund for the Arts: Nesta, Arts and 
 ## How to install
 You will require:
 
-###Services
+### Services
 - Neo4J Community Edition
 - MongoDb + PHP MongoDB drivers
 - Apache
 
-###Vagrant
+### Vagrant
 This project has a Vagrant file allowing you to automate the installation of required packages (https://www.vagrantup.com/).
 
 Once Vagrant is installed open a terminal and head into the working directory and type vagrant up. The server will install all packages required.
 
 Your server will be available on localhost:2200
 
-###Importing data
+### Importing data
 You will require xml dumps from Culture Grid, place these within the app/webroot/files/artefact_xml_exports folder before running the import scripts.
 
 After the server is live;
@@ -42,15 +42,15 @@ After the server is live;
 - Visit /import_images which will download images specified in the LidoXML and place them under app/webroot/img/artefacts/{medium, large}/{Lido Record Id}/{0..*.jpeg}
 - Congratulations, the engine should be up and running. Visit localhost:2200 to start browsing.
 
-###Data
+### Data
 Working collection of artefacts - Available from Culture Grid (http://www.culturegrid.org.uk)
 
-###API Keys
+### API Keys
 - Culture Grid API Key
 - Alchemy API - Available from http://www.alchemyapi.com
 
 You will need to edit your alchemy API key in the bootstrap.php file (app/config/bootstrap.php Line 76)
 
-####Images
+#### Images
 The folder structure is as follows: /app/webroot/img/artefacts/(large/medium/small)/lidoRecID
 
